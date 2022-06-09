@@ -15,15 +15,22 @@ enum PreferredPosition {
 
 class CustomPopupMenuController extends ChangeNotifier {
   bool menuIsShowing = false;
+  bool allowToHide = true;
 
   void showMenu() {
-    menuIsShowing = true;
-    notifyListeners();
+    if(!menuIsShowing) {
+      menuIsShowing = true;
+      notifyListeners();
+    }
   }
 
   void hideMenu() {
-    menuIsShowing = false;
-    notifyListeners();
+    print('allowToHide $allowToHide');
+    if(allowToHide && menuIsShowing) {
+      print('hideMenu ');
+      menuIsShowing = false;
+      notifyListeners();
+    }
   }
 
   void toggleMenu() {
