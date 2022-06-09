@@ -164,10 +164,16 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 // ignore: must_be_immutable
-class MessageContent extends StatelessWidget {
+class MessageContent extends StatefulWidget {
   MessageContent(this.message);
 
   final ChatModel message;
+
+  @override
+  State<MessageContent> createState() => _MessageContentState();
+}
+
+class _MessageContentState extends State<MessageContent> {
   List<ItemModel> menuItems = [
     ItemModel('复制', Icons.content_copy),
     ItemModel('转发', Icons.send),
@@ -231,9 +237,11 @@ class MessageContent extends StatelessWidget {
     );
   }
 
+  final CustomPopupMenuController _c1 = CustomPopupMenuController();
+
   @override
   Widget build(BuildContext context) {
-    bool isMe = message.isMe;
+    bool isMe = widget.message.isMe;
     double avatarSize = 40;
 
     return Container(
@@ -246,9 +254,11 @@ class MessageContent extends StatelessWidget {
             margin: EdgeInsets.only(right: isMe ? 0 : 10, left: isMe ? 10 : 0),
             child: CustomPopupMenu(
               child: _buildAvatar(isMe, avatarSize),
+              controller: _c1,
               menuBuilder: () => GestureDetector(
                 child: _buildAvatar(isMe, 100),
                 onLongPress: () {
+                  _c1.allowToHide = !_c1.allowToHide;
                   print("onLongPress");
                 },
                 onTap: () {
@@ -269,7 +279,7 @@ class MessageContent extends StatelessWidget {
                 color: isMe ? Color(0xff98e165) : Colors.white,
                 borderRadius: BorderRadius.circular(3.0),
               ),
-              child: Text(message.content),
+              child: Text(widget.message.content),
             ),
             menuBuilder: _buildLongPressMenu,
             barrierColor: Colors.transparent,
