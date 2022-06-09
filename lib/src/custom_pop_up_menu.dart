@@ -25,9 +25,7 @@ class CustomPopupMenuController extends ChangeNotifier {
   }
 
   void hideMenu() {
-    print('allowToHide $allowToHide');
     if(allowToHide && menuIsShowing) {
-      print('hideMenu ');
       menuIsShowing = false;
       notifyListeners();
     }
